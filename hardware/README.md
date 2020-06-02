@@ -18,6 +18,10 @@ Here are the rendering images of the conception.
 
 <img src="../img/Front.png" width="500px">
 
+<img src="../img/inside_bottom.png" width="500px">
+
+<img src="../img/inside_top.png" width="500px">
+
 ### Electronic
 
 To create the scheamtic of the project, we used Eagle. Eagle is a very powerful tool made by Autodesk and can be linked with Fusion 360 which is really useful. 
