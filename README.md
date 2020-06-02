@@ -22,10 +22,8 @@ This repository contains all documents related to the project.
 | Tutorial about using a config.ini file with Python      | [Click here](https://pymotw.com/2/ConfigParser/)                                                               | Storing user settings as non-volatile variables                                                                  |
 | Forum about dismounting USB drive from Python           | [Click here](https://www.raspberrypi.org/forums/viewtopic.php?t=198250)                                        | Safe ejecting USB keys after importations and exportations
 
-## Hardware ##
-### 3D printing ###
-
-### Electronics ###
+## Hardware (3D printing and electronics) ##
+Go to [hardware](hardware/README.md) to see an electronic schematic and our 3D model of the case.
 
 ## Installation ##
 ### By burning .img to SD card (recommended) ###
