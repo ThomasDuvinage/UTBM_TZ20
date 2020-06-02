@@ -1295,4 +1295,3 @@ if __name__ == '__main__':
     finally:
         mylcd.backlight(0)
         GPIO.cleanup()
-        

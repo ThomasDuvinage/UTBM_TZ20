@@ -16,7 +16,8 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version="1.0",
     description="A Raspberry Pi-powered console to control students attendance",
-    long_description=long_description,
+    long_description="This project consists in designing, building and programming a full portable console allowing the University of Technology of Belfort-Montbeliard (France) staff to control students attendance at some mandatory events.  \
+    This project involves Raspberry Pi programming through Python, 3D printing, and electronics.",
 
     # The project's main homepage.
     url="https://github.com/totordudu/UTBM_TZ20",
@@ -49,7 +50,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='attendance university',
+    keywords='attendance control university',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -60,7 +61,7 @@ setup(
     # project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['treelib', 'lxml', 'numpy'],
+    install_requires=['configparser','treelib', 'spidev', 'psutil','pyudev','requests','urllib','shutil'],
 
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:

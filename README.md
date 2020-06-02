@@ -3,7 +3,7 @@
 Welcome to the Github repository of our project !  
 It consists in designing, building and programming a full portable console allowing the University of Technology of Belfort-Montbeliard (France) staff to control students attendance at some mandatory events.  
 This project involves Raspberry Pi programming through Python, 3D printing, and electronics.
-This repository contains all documents related to the project that is currently under construction.
+This repository contains all documents related to the project.
 
 <img src="img/box.jpg" width="500px">
 
