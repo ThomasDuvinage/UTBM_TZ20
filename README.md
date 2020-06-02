@@ -66,4 +66,10 @@ Add at the end
 dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=18
 ```
 
-Then the script main.py should run by entering : ```~/UTBM/script $ python main.py```
+Then the script main.py should run by entering : 
+```~/UTBM/script $ python main.py```
+
+8. Restart your raspberry, and *main.py* should automatically start
+```
+sudo reboot now
+```
