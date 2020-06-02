@@ -1,0 +1,6 @@
+[submodule "script/treelib"]
+	path = script/treelib
+	url = https://github.com/caesar0301/treelib
+[submodule "script/cc863375a6e19dce359d"]
+	path = script/cc863375a6e19dce359d
+	url = https://gist.github.com/DenisFromHR/cc863375a6e19dce359d

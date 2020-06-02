@@ -1,0 +1,29 @@
+from lcd_i2c import *
+from rotary_encoder import *
+from rgb_led import *
+from buzzer import *
+from treelib import Tree, Node
+from RPi import GPIO
+
+GPIO.setwarnings(False)
+
+led = Led()
+buzz = Buzzer()
+encoder = Encoder()
+
+def start():
+    lcd_init()
+
+    buzz.start()
+    led.setColor("g",self)
+
+    lcd_string(" CONTROLEUR DE",LCD_LINE_1)
+    lcd_string(" PRESENCE UTBM",LCD_LINE_2)
+
+    time.sleep(2)
+
+def main():
+    start()
+
+while(True):
+    main()

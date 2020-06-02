@@ -1,0 +1,10 @@
+[Unit]
+Description=Fan Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/UTBM_TZ20/script/external_devices/fan.py
+
+[Install]
+WantedBy=multi-user.target
