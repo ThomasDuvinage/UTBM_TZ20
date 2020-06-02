@@ -3,9 +3,10 @@ import time
 import sys
 import signal
 
-fan = 24
 
-hysteresis = [43,54]
+fan = 24 #pin of rpi connected to the transistor connected
+
+hysteresis = [43,54]#temperature hysteresis
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(fan, GPIO.OUT)
@@ -24,6 +25,7 @@ while(True):
     cpuTemp = float(cpuTempFile.read()) / 1000
     cpuTempFile.close()
 
+    #enable the fan depending on the temperature of the CPU
     if cpuTemp>hysteresis[1]:
         GPIO.output(fan,1)
     
