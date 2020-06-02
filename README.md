@@ -38,28 +38,24 @@ Please follow the instructions below to proceed software installation :
 ```
 whoami
 ```
-4. Clone this repository to /home/pi :
+4. Clone this repository to */home/pi* :
 ```
 git clone https://github.com/totordudu/UTBM_TZ20.git
 ```
-5. Give all permissions to install script :
-```
-sudo chmod 777 install.py
-```
-6. Run install.py:
+5. Run install.sh from the new folder with sudo privileges (you must type your password, by default its *raspberry*) :
 ```
 cd /home/pi/UTBM_TZ20/
-python install.py
+sudo ./install.sh
 ```
-7. Check that *scripts/main.py* has *-rwxrwxrwx* permissions :
+6. Check that *scripts/main.py* has *-rwxrwxrwx* permissions :
 ```
 ls -l /home/pi/UTBM_TZ20/scripts/main.py
 ```
-8. Enable SPI, I2C, remote GPIO
+7. Enable SPI, I2C, remote GPIO
 ```sudo raspi-config
 Interfacing options 
 ```
-9. modify the SPI connection 
+7. modify the SPI connection 
 ```
 sudo nano /boot/config.txt
 ```
