@@ -60,7 +60,7 @@ ConfigFileName = "/home/pi/UTBM_TZ20/script/mainconfig.ini"
 IsInterruptionIntentional = False
 FileDatetimeFormat = "%d-%m-%Y-%H-%M-%S"
 ForceLevel = []
-version = 0
+version = 0 #date of last git pull
 
 #INITIALIZATION OF VARIABLES AND EXTERNAL OBJECTS
 continue_reading = True
@@ -68,10 +68,10 @@ admin_uid = ""
 mylcd = lcd()
 mylcd.lcd_clear()
 MIFAREReader = MFRC522()
-rtc = DS1302(clk_pin=13, data_pin=19, ce_pin=26) #lecture : datetime = rtc.read_datetime(), ecriture : rtc.write_datetime(dt_write)
+rtc = DS1302(clk_pin=13, data_pin=19, ce_pin=26) #To use RTC : lecture : datetime = rtc.read_datetime(), ecriture : rtc.write_datetime(dt_write)
 
 #FUNCTIONS ABOUT ADMIN AUTHENTIFICATION AND CARD SCANNING
-def RecordAdmin():
+def RecordAdmin(): #Records the administrator. The administrator will be the only one that can stop scanning procedure and delete controls (individually and all at once)
     led.setColor("m",led)
     mylcd.lcd_clear()
     mylcd.lcd_display_string(" SCANNEZ CARTE",1)
@@ -88,7 +88,7 @@ def RecordAdmin():
     buzz.success()
     return uid
 
-def CheckUIDFormat(UID):
+def CheckUIDFormat(UID): #Checks if a card UID corresponds to a UTBM card
     if acceptUTBMCardsOnly:
         if len(UID)==14 and UID[0:3]=="805" and UID[12:14]=="04":
             return True
@@ -97,7 +97,7 @@ def CheckUIDFormat(UID):
     else:
         return True
 
-def CheckAdmin():
+def CheckAdmin(): #Authentificates the administrator before allowing access to sensible functions
     led.setColor("m",led)
     mylcd.lcd_clear()
     mylcd.lcd_display_string(" SCANNEZ CARTE",1)
@@ -119,11 +119,12 @@ def CheckAdmin():
     buzz.success()
     return True            
 
-FoolUIDs = True #must be False if user has not regsitered his MAC addresses in dict below
+#Following 3 variables are used to simulate fake cards for development purposes
+FoolUIDs = True #must be False if user has not registered his MAC addresses in dict below
 
 MAC_addresses = {
-    'b8:27:eb:b5:93:fd':'val', #:fd
-    'b8:27:eb:e4:ef:1e':'tom'
+    'b8:27:eb:b5:93:fd':'val', #developper 1
+    'b8:27:eb:e4:ef:1e':'tom' #developper 2
 }
 
 fakeUIDs = {
@@ -157,13 +158,13 @@ fakeUIDs = {
     }
     }
 
-def uidToString(uid):
+def uidToString(uid): #Formats a scanned UID to a clean string
     mystring = ""
     for i in uid:
         mystring = format(i, '02X') + mystring
     return mystring
 
-def WaitForCard(allowClick,timeout=-1):
+def WaitForCard(allowClick,timeout=-1): #Waits for RC-522 to scan a new card with timeout
     end = datetime.datetime.now() + datetime.timedelta(seconds=timeout)
     while continue_reading:
         if allowClick and encoder.isClicked():
@@ -195,12 +196,12 @@ def WaitForCard(allowClick,timeout=-1):
                 print("Authentication error")
 
 #FUNCTIONS ABOUT DISPLAY AND NAVIGATION
-def CenterOnScreen(string,width):
+def CenterOnScreen(string,width): #Centers given string
     nb_spaces = (width-len(string))/2
     newString = " "*nb_spaces+string+" "*(width-(nb_spaces+len(string)))
     return newString
 
-def YesNoBackScreen(line_1,led_state,options_list,defaultOption): #options array contains 3 characters identifiers in the following order : yes, no, back
+def YesNoBackScreen(line_1,led_state,options_list,defaultOption): #Interface that present options to user. options_list array contains 3 characters strings in the following order : yes, no, back
     #implementer avec AUTOSCROLL
     led.setColor(led_state,led)
     mylcd.lcd_clear()
@@ -275,7 +276,7 @@ def holdScreen(Strings,ledState,sec,ForbidInterruption): #Multi Line Autoscroll 
                     j+=1
                 time.sleep(1-float(ScrollSpeed)/100)
 
-def AutoScroll(CenterString,CurrentPosition,nbElements):
+def AutoScroll(CenterString,CurrentPosition,nbElements): #Used to handle screen-size overshoot
     j=0
     while(not encoder.isClicked() and not encoder.updateCount()):
         if(CurrentPosition==0): #left extremity
@@ -294,7 +295,7 @@ def AutoScroll(CenterString,CurrentPosition,nbElements):
         AntiRebound()
     return True
 
-def NavigateLevel(parentIdentifier,defaultIdentifier):
+def NavigateLevel(parentIdentifier,defaultIdentifier): #Let user navigate in a level of menu tree
     parentData = menuTree[parentIdentifier].data
     subMenuIdentifiers = menuTree.is_branch(parentIdentifier)
     TotalData = []
@@ -330,7 +331,7 @@ def NavigateLevel(parentIdentifier,defaultIdentifier):
     else:
         return subMenuIdentifiers[pos]
 
-def NavigateInArray(line_1,array,defaultIndex,allowBack,led_color):
+def NavigateInArray(line_1,array,defaultIndex,allowBack,led_color): #Same as function above, but detached from menu tree
     if len(array) == 0:
         print("Can't navigate in empty array")
         return False
@@ -360,7 +361,7 @@ def NavigateInArray(line_1,array,defaultIndex,allowBack,led_color):
         return False
     return array[pos]
 
-def Menu(firstParentIdentifier,defaultIdentifier):
+def Menu(firstParentIdentifier,defaultIdentifier): #Recursive function to navigate inside main menu
     global ForceLevel
     global menuTree
     functions_needing_menu_update = ["show_attendance_controls","control_delete"]
@@ -394,30 +395,30 @@ def Menu(firstParentIdentifier,defaultIdentifier):
             defaultIdentifier=0
 
 #FUNCTIONS ABOUT EXTERNAL DEVICES
-def EncWatchPause(sec):
+def EncWatchPause(sec): #Waits for action on encoder, with a timeout
     deb = datetime.datetime.now()
     while(datetime.datetime.now()<deb+datetime.timedelta(seconds=sec)):
         if(encoder.isClicked() or encoder.updateCount()):
             return True
         time.sleep(0.001)
 
-def setLedState(state):
+def setLedState(state): #Set let state (same as led.setColor but allows led shutdown)
     if state=="o":
         led.shutDown()
     else:
         led.setColor(state,led)
 
-def AntiRebound():
+def AntiRebound(): #Avoid encoder button rebounds
     buzz.click()
     while encoder.isClicked():
         pass
 
-def getUSBPath():
+def getUSBPath(): #Returns USB key mounting point
     key = USBKey()
     key.findUSBPath()
     return key.getPath()
 
-def rtc_set_time(dt_to_write):
+def rtc_set_time(dt_to_write): #Set Real Time Clock module time
     try:
         rtc.write_datetime(dt_to_write)
         # check update is good
@@ -433,7 +434,7 @@ def rtc_set_time(dt_to_write):
     finally:
         rtc.close()
 
-def rtc_get_time():
+def rtc_get_time(): #Read Real Time Clock module time
     try:
         dt = rtc.read_datetime()
         print("rtc time readed : ", dt.strftime(FileDatetimeFormat))
@@ -443,7 +444,7 @@ def rtc_get_time():
     finally:
         rtc.close()
 
-def checkInternet():
+def checkInternet(): #Checks internet connection using Google server
     url='http://www.google.com/'
     timeout=5
     try:
@@ -453,7 +454,7 @@ def checkInternet():
         print ("checkInternet failed : no Internet Connection")
     return False
 
-def dismount_USB(mountpoint):
+def dismount_USB(mountpoint): #Allows user to safely remove USB key from Raspberry
     #ASK USER IF REQUEST DISMOUNT AND SHOW HIM USB KEY NAME
     buzz.warn()
     chx = YesNoBackScreen("EJECTER CLE USB "+mountpoint.split("/")[-1]+" ?",'y',['OUI', 'NON'],'NON')
@@ -465,7 +466,7 @@ def dismount_USB(mountpoint):
         holdScreen(['RETIREZ CLE EN','TOUTE SECURITE'],'g',2,True)
 
 #AUXILIARY FUNCTIONS
-def setDigit(line_1,line_2_pattern,digit_position,default,limit):
+def setDigit(line_1,line_2_pattern,digit_position,default,limit): #Interface that allows user to set a digit value with a certain pattern
     mylcd.lcd_clear()
     mylcd.lcd_display_string(line_1,1)
     mylcd.lcd_display_string(line_2_pattern,2)
@@ -489,11 +490,11 @@ def setDigit(line_1,line_2_pattern,digit_position,default,limit):
     AntiRebound()
     return pos
 
-def Digit(nb,rank):
+def Digit(nb,rank): #Extracts a digit from number
     nb/=10**rank
     return nb%10
 
-def Number(digits):
+def Number(digits): #Constructs a number from digits
     nb=0
     i=0
     for dig in digits:
@@ -502,7 +503,7 @@ def Number(digits):
         i+=1
     return nb
 
-def setNumberEns(line_1,data,default): #data must be an array like [[inf,sup,unit],[],...,[]], and default an array like [number, unit]
+def setNumberEns(line_1,data,default): #Interface used to navigate set a value with units and subunits (like hour,minutes,seconds). Data must be an array like [[inf,sup,unit],[],...,[]], and default an array like [number, unit]
     res = default
     while True:
         inf = 0
@@ -536,7 +537,7 @@ def setNumberEns(line_1,data,default): #data must be an array like [[inf,sup,uni
                 else:
                     return res
 
-def setNumber(line_1,line_2_pattern,positions,extrema,step,default,ExitIfExtremaReached=False):
+def setNumber(line_1,line_2_pattern,positions,extrema,step,default,ExitIfExtremaReached=False): #Interface to set a number
     inf = extrema[0]
     sup = extrema[1]
     if default<inf or default>sup:
@@ -567,14 +568,14 @@ def setNumber(line_1,line_2_pattern,positions,extrema,step,default,ExitIfExtrema
         AntiRebound()
         return pos
 
-def createDatePattern(Base,ExistingDigits):
+def createDatePattern(Base,ExistingDigits): #Creates a date pattern to display while entering digits
     s = Base
     for digit in ExistingDigits:
         if digit[1]!=(-1):
             s = s[:digit[0]] + str(digit[1]) + s[digit[0] + 1:]
     return s
 
-def getMAC(interface='eth0'): #to call : print getMAC('eth0')
+def getMAC(interface='eth0'): #Get Raspberry MAC adress and therefore allows the university IT staff to put it in their network whitelist. To call : print getMAC('eth0')
     # Return the MAC address of the specified interface
     try:
         str = open('/sys/class/net/%s/address' %interface).read()
@@ -582,10 +583,10 @@ def getMAC(interface='eth0'): #to call : print getMAC('eth0')
         str = "ERROR"
     return str[0:17]
 
-def check_DSI_file(absolute_path):
+def check_DSI_file(absolute_path): #Checks validity of students list
     pass
 
-def parse_time(time_str):
+def parse_time(time_str): #Parses time from mainconfig.ini file
     regex = re.compile(r'((?P<days>\d+?)d)?((?P<hours>\d+?)h)?((?P<minutes>\d+?)m)?')
     parts = regex.match(time_str)
     if not parts:
@@ -597,13 +598,13 @@ def parse_time(time_str):
             time_params[name] = int(param)
     return datetime.timedelta(**time_params)
 
-def timedeltaToStr(TD):
+def timedeltaToStr(TD): #Turns a timedelta object to a string
     days = TD.days
     hours = TD.seconds/3600
     minutes = (TD.seconds/60)%60
     return str(days).zfill(2)+"d"+str(hours).zfill(2)+"h"+str(minutes).zfill(2)+"m"
 
-def listDirectory(parentDir,list_folders,list_files,only_csv): #prefer absolute path over relative ones for parentDir
+def listDirectory(parentDir,list_folders,list_files,only_csv): #Lists directory content with specific restrictions. Prefer absolute path over relative ones for parentDir
     if only_csv and not list_files:
         print ("Incoherent parameters")
         return
@@ -619,8 +620,8 @@ def listDirectory(parentDir,list_folders,list_files,only_csv): #prefer absolute 
         break #prevents from deeper search (we stop at level 1)
     return res
 
-#FUNCTIONS ABOUT TERMINAL ACTIONS RAISED AFTER NAVIGATING IN MENU
-def load_students():
+#FUNCTIONS ABOUT TERMINAL ACTIONS RAISED WHILE NAVIGATING IN MENU
+def load_students(): #Allows administrator to load the list of students
     list_array = listDirectory('/home/pi/UTBM_TZ20/files/DSI_lists/',False,True,True)
     if len(list_array)!=0:
         list_array = sortDatetimeArray(list_array,FileDatetimeFormat,True)
@@ -681,7 +682,7 @@ def load_students():
             holdScreen(["ERREUR LORS DE L'IMPORTATION","DE LA LISTE DES ETUDIANTS"],'r',1,True)
     dismount_USB(USBMountPoint)
 
-def set_bip():
+def set_bip(): #Toggle buzzer
     if buzz.enabled:
         defaultChoice = "NON"
     else:
@@ -697,7 +698,7 @@ def set_bip():
         time.sleep(0.2)
     update_config()
 
-def set_datetime():
+def set_datetime(): #Change date and time, either manually or automatially if connected to internet
     choice = YesNoBackScreen("CHOISIR MODE REGLAGE","m",["AUT","MAN","RET"],"AUT")
     if choice=="AUT":
         isInternet = checkInternet()
@@ -768,7 +769,8 @@ def set_datetime():
             time.sleep(1)
             currentDT = currentDT+datetime.timedelta(seconds=1)
     
-def scanning(DT = None):
+def scanning(DT = None): #Launches the scanning procedure
+    #TODO: reload previous number of scans to initialize on resume
     if not CheckAdmin():
         return
     else:
@@ -819,7 +821,7 @@ def scanning(DT = None):
         result = str(nb_tot)+" SCANS dont "+str(nb_scans)+" SUCCES, "+str(nb_err)+" ERREUR(S) et "+str(nb_rescans)+" TENTATIVE(S) DE RESCAN"
         YesNoBackScreen("SCAN TERMINE : "+result,"g",["OK"],"OK")
 
-def shutdown():
+def shutdown(): #Shutdown raspberry with confirmation asking
     global IsInterruptionIntentional
     rep = YesNoBackScreen("CONFIRMER EXTINCTION ?","r",["OUI","RET"],"RET")
     if(rep=="OUI"):
@@ -834,7 +836,7 @@ def shutdown():
         GPIO.cleanup()
         subprocess.call("sudo shutdown now", shell=True)
 
-def restart():
+def restart(): #Reboot raspberry with confirmation asking
     global IsInterruptionIntentional
     rep = YesNoBackScreen("CONFIRMER REDEMARRAGE ?","r",["OUI","RET"],"RET")
     if(rep=="OUI"):
@@ -849,10 +851,10 @@ def restart():
         GPIO.cleanup()
         subprocess.call("sudo reboot now", shell=True)
 
-def show_attendance_controls():
+def show_attendance_controls(): #Shows all attendance controls
     update_menu()
 
-def delete_attendance_controls():
+def delete_attendance_controls(): #Deletes all attendance controls
     if not CheckAdmin():
         return
     ControlList = listDirectory("/home/pi/UTBM_TZ20/files/UID_inputs",False,True,True)
@@ -871,7 +873,7 @@ def delete_attendance_controls():
     buzz.success()
     YesNoBackScreen("SUPPRESSION REUSSIE",'g',['OK'],'OK')
 
-def forbid_wrong_cards():
+def forbid_wrong_cards(): #Let user set if wrong cards (i.e. cards that are not respecting UTBM format)
     global acceptUTBMCardsOnly
     print("acceptUTBMCardsOnly is currently set to ",acceptUTBMCardsOnly)
     buzz.warn()
@@ -884,7 +886,7 @@ def forbid_wrong_cards():
     print("acceptUTBMCardsOnly is currently now to ",acceptUTBMCardsOnly)
     update_config()
 
-def set_interval():
+def set_interval(): #Let user set the interval of starting time in which two attendance controles are considered to be similar
     global IntervalMulti
     unit_translation = {
         "jours":"days",
@@ -912,12 +914,12 @@ def set_interval():
     IntervalMulti = TD
     update_config()
 
-def set_scroll_speed():
+def set_scroll_speed(): #Let user set a scrolling speed for LCD
     global ScrollSpeed
     ScrollSpeed = setNumber("VITESSE DEFIL","     >   %<     ",[6,8],[0,100],5,ScrollSpeed)
     update_config()
 
-def show_MAC():
+def show_MAC(): #Show MAC adress of Raspberry Pi
     address = getMAC('eth0')
     if(address=="ERROR"):
         print("error while determining MAC address")
@@ -926,7 +928,7 @@ def show_MAC():
     else:
         YesNoBackScreen("Adresse MAC : "+address,"m",['OK'],"OK")
 
-def update_system():
+def update_system(): #Updates sotfware by performing a git pull
     if not checkInternet():
         buzz.error()
         holdScreen(["PAS DE CONNEXION INTERNET","VEUILLEZ CONNECTER ETHERNET"],"r",1,True)
@@ -946,7 +948,7 @@ def update_system():
         if(YesNoBackScreen("REDEMARRER MAINTENANT ?",'y',['OUI','NON'],'OUI')=='OUI'):
             restart()
 
-def get_version(): #returns the date of last git pull
+def get_version(): #Returns the date of last git pull
     date_str = subprocess.check_output(['git','log','-n','1','--pretty=format:%ad'],cwd="/home/pi/UTBM_TZ20")
     arr = date_str.split(' ')
     new_str = ' '.join(arr[:-1])
@@ -955,7 +957,8 @@ def get_version(): #returns the date of last git pull
 """ def control_resume(datetime):
     scanning(datetime) #TODO: reload number of scans to display on screen while scanning and after scan finished
  """
-def control_extract(DT):
+
+def control_extract(DT): #Performs attendance control extraction
     DSI_files=listDirectory("/home/pi/UTBM_TZ20/files/DSI_lists/",False,True,True)
     DSI_files=sortDatetimeArray(DSI_files,FileDatetimeFormat,True)
     if not DSI_files:
@@ -1022,10 +1025,10 @@ def control_extract(DT):
         holdScreen(["EXPORTATION REUSSIE","FICHIERS SUR CLE USB"],'g',1,True)
     dismount_USB(USBMountPoint)
 
-def prefix(base, pref):
+def prefix(base, pref): #Prefix a string
     return pref+" : "+base
 
-def control_results(datetime):
+def control_results(datetime): #Shows results of attendance control on LCD. Available only if extraction was performed before
     Report = Files('/home/pi/UTBM_TZ20/files/Final_extractions/'+datetime+'/report.csv')
     if not Report.exist():
         buzz.error()
@@ -1043,8 +1046,10 @@ def control_results(datetime):
         ret.append(prefix(res,prefixs[Results.index(res)]))
     NavigateInArray("RESULTATS CTRL",ret,0,True,'b')
 
-def control_delete(datetime):
+def control_delete(datetime): #Deletes targetted attendance control
     global ForceLevel
+    if not CheckAdmin():
+        return
     buzz.warn()
     holdScreen(["ATTENTION CETTE OPERATION","EST IRREVERSIBLE"],'y',1,True)
     if YesNoBackScreen("CONFIRMER SUPPRESSION ?",'r',["OUI", "RET"],"RET")=="RET":
@@ -1065,7 +1070,7 @@ def control_delete(datetime):
     return True
 
 #FUNCTIONS TO CREATE MENU TREE AND UPDATE IT
-def create_menu():
+def create_menu(): #Initializes main menu tree
     menu = treelib.Tree()
     menu.create_node(identifier='main',data=["","MENU PRINCIPAL",""]) #[led_color (o for off), menu_title]
     menu.root = 'main'
@@ -1087,14 +1092,14 @@ def create_menu():
 
 menuTree = create_menu()
 
-def isDateTime(string, format):
+def isDateTime(string, format): #Checks existence and validity of a datetime
     try:  #check filename integrity as having the right datetime format
         dt = datetime.datetime.strptime(string,format)
         return dt
     except ValueError:
         return False
 
-def sortDatetimeArray(array,format,desc):
+def sortDatetimeArray(array,format,desc): #Sort an array of datetime strings
     newArray = []
     newDTArray = []
     for dtstr in array:
@@ -1107,7 +1112,7 @@ def sortDatetimeArray(array,format,desc):
         newArray.append(DT.strftime(format))
     return newArray
 
-def update_menu(): #creates as many nodes and subnodes as there are files found in ../files/UID_inputs
+def update_menu(): #Creates as many nodes and subnodes as there are files found in ../files/UID_inputs
     global menuTree
     childs = menuTree.is_branch('show_attendance_controls')
     nd = menuTree.get_node('show_attendance_controls')
@@ -1162,7 +1167,7 @@ def sigterm_handler(_signo, _stack_frame): #HANDLER FUNCTION FOR SIGTERM SIGNAL
 signal.signal(signal.SIGTERM, sigterm_handler) #associates SIGTERM signal with its handler
 
 #FUNCTIONS ABOUT CONFIG FILE
-def check_config():
+def check_config(): #Checks validity of mainconfig.ini
     a = parser.read(ConfigFileName)
     if len(a)==0:
         print ("Config file named ",ConfigFileName," was not found")
@@ -1184,7 +1189,7 @@ def StrToBool(string):
 
 parser = SafeConfigParser()
 
-def read_config():
+def read_config(): #Parse and read mainconfig.ini
     global acceptUTBMCardsOnly
     global ScrollSpeed
     global IntervalMulti
@@ -1197,7 +1202,7 @@ def read_config():
     buzz.setEnable(StrToBool(parser.get('settings','buzzEnabled')))
     IntervalMulti = parse_time(str(parser.get('settings','IntervalMulti')))
 
-def update_config():
+def update_config(): #Updates mainconfig.ini
     if not check_config():
         print ("error while updating config file")
         return
@@ -1212,7 +1217,7 @@ def update_config():
 read_config()
 
 #STARTUP FUNCTION
-def start():
+def start(): #Start sequence
     global version
     global admin_uid
     #blink lcd backlight 2 times, starting from low
