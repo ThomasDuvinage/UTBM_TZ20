@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import RPi.GPIO as GPIO
 
-#define colors
+#define colors by using dictonnary (R,G,B)
 colorPanel = {}
 colorPanel['r']=(1,0,0)
 colorPanel['g']=(0,1,0)
@@ -11,7 +11,11 @@ colorPanel['m']=(1,0,1)
 colorPanel['y']=(1,1,0)
 colorPanel['w']=(1,1,1)
 
+"""
+    This class represents the Led 
+"""
 class Led():
+    # Constructor
     def __init__(self):
         self.r = 21
         self.g = 20
@@ -24,11 +28,15 @@ class Led():
 
     @staticmethod
     def setColor(color, self):
+        """
+            This method is used to set the color of the led by passing in argument an array of color state
+        """
         if color in colorPanel:
             GPIO.output(self.r,1-colorPanel[color][0])
             GPIO.output(self.g,1-colorPanel[color][1])
             GPIO.output(self.b,1-colorPanel[color][2])
     
+    # Shutdown method is used to switch off the led
     def shutDown(self):
             GPIO.output(self.r,1)
             GPIO.output(self.g,1)

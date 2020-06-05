@@ -23,10 +23,12 @@ This repository contains all documents related to the project.
 | Forum about dismounting USB drive from Python           | [Click here](https://www.raspberrypi.org/forums/viewtopic.php?t=198250)                                        | Safe ejecting USB keys after importations and exportations
 
 ## Hardware (3D printing and electronics) ##
-Go to [hardware/README.md](hardware/README.md)
+=======
+Go to [hardware](hardware/README.md) to see an electronic schematic and our 3D model of the case.
 
-## Setup ##
+## Installation ##
 ### By burning TZ20.img to an empty SD card (recommended) ###
+>>>>>>> eb0ae4555269eb2e0d8dc44ecf4f938724aca84b
 
 ### By cloning this repository ###
 Please follow the instructions below to proceed software installation :

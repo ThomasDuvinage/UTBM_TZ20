@@ -933,6 +933,7 @@ def update_system(): #Updates sotfware by performing a git pull
         buzz.error()
         holdScreen(["PAS DE CONNEXION INTERNET","VEUILLEZ CONNECTER ETHERNET"],"r",1,True)
         return
+    holdScreen(["RECHERCHE MaJ","EN COURS..."],'y',1,True)
     check_version = subprocess.check_output(['git','pull'],cwd="/home/pi/UTBM_TZ20")
     if check_version == 'Already up to date.\n' or check_version == 'D\xc3\xa9j\xc3\xa0 \xc3\xa0 jour.\n': #English and french returns
         buzz.warn()
@@ -1008,7 +1009,7 @@ def control_extract(DT): #Performs attendance control extraction
             return
         buzz.success()
         holdScreen(["EXTRACTION SIMILAIRE","TROUVEE SUR CLE USB"],'g',1,True)
-        if YesNoBackScreen("FUSIONNER ?",'y',['OUI','NON','RET'],"OUI")=="OUI":
+        if YesNoBackScreen("FUSIONNER ?",'y',['OUI','NON'],"OUI")=="OUI":
             print("Merging files on USB Key")
             holdScreen(["FUSION LISTES","EN COURS ..."],'m',1,True)
             file.addToUSBKEY(USBMountPoint,datetime.datetime.strptime(DT,FileDatetimeFormat),IntervalMulti)
