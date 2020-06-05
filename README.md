@@ -22,13 +22,11 @@ This repository contains all documents related to the project.
 | Tutorial about using a config.ini file with Python      | [Click here](https://pymotw.com/2/ConfigParser/)                                                               | Storing user settings as non-volatile variables                                                                  |
 | Forum about dismounting USB drive from Python           | [Click here](https://www.raspberrypi.org/forums/viewtopic.php?t=198250)                                        | Safe ejecting USB keys after importations and exportations
 
-## Hardware ##
-### 3D printing ###
+## Hardware (3D printing and electronics) ##
+Go to [hardware/README.md](hardware/README.md)
 
-### Electronics ###
-
-## Installation ##
-### By burning .img to SD card (recommended) ###
+## Setup ##
+### By burning TZ20.img to an empty SD card (recommended) ###
 
 ### By cloning this repository ###
 Please follow the instructions below to proceed software installation :
@@ -42,7 +40,14 @@ whoami
 ```
 git clone https://github.com/totordudu/UTBM_TZ20.git
 ```
-5. Run install.sh from the new folder with sudo privileges (you must type your password, by default its *raspberry*) :
+5. Enable SPI and I2C interfaces via raspi-config wizard :
+```
+sudo raspi-config  
+```
+   * Using your keyboard arrows and Tab key, navigate to **Interfacing Options** and then **I2C**, then confirm
+   * Repeat the same operation for **SPI** interface
+
+1. Run install.sh from the new folder with sudo privileges (you must type your password, by default its *raspberry*) :
 ```
 cd /home/pi/UTBM_TZ20/
 sudo ./install.sh
@@ -51,23 +56,15 @@ sudo ./install.sh
 ```
 ls -l /home/pi/UTBM_TZ20/scripts/main.py
 ```
-7. Enable SPI, I2C, remote GPIO
-```sudo raspi-config
-Interfacing options 
-```
-7. modify the SPI connection 
-```
-sudo nano /boot/config.txt
-```
-Add at the end 
-```
-[all]
-#dtoverlay=vc4-fkms-v3d
-dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=18
-```
+* Otherwise, give those permissions :
+    ```
+    sudo chmod 777 /home/pi/UTBM_TZ20/scripts/main.py
+    ```
 
-Then the script main.py should run by entering : 
-```~/UTBM/script $ python main.py```
+7. Then the script main.py should normally run by typing the following command : 
+```
+/usr/bin/python UTBM_TZ20/script/main.py
+```
 
 8. Restart your raspberry, and *main.py* should automatically start
 ```
