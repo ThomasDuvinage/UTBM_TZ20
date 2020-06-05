@@ -1,8 +1,18 @@
 #! /bin/bash
-#TODO: Install new I2C interface
-#TODO: Install systemctl services, reload daemon
 python setup.py install
-echo "Installation terminee ! Redemarrez la Raspberry Pi pour commencer a utiliser le boitier de controle."
+echo "Installation terminee !"
+
+echo "dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=18" >> /boot/config.txt
+echo "Creation I2C OK !"
+
+cp /home/pi/UTBM_TZ20/services/fan.service /etc/systemd/system/fan.service
+cp /home/pi/UTBM_TZ20/services/main.service /etc/systemd/system/main.service
+systemctl enable fan.service
+systemctl enable main.service
+systemctl daemon-reload
+echo "Creation des services OK !"
+
+echo "Redemarrez la Raspberry Pi pour commencer a utiliser le boitier de controle."
 read -p "Redemarrer maintenant ? (O/n)" -n 1 -r
 if [[ $REPLY =~ ^[Oo]$ ]]
 then
