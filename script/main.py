@@ -1009,7 +1009,7 @@ def control_extract(DT): #Performs attendance control extraction
             return
         buzz.success()
         holdScreen(["EXTRACTION SIMILAIRE","TROUVEE SUR CLE USB"],'g',1,True)
-        if YesNoBackScreen("FUSIONNER ?",'y',['OUI','NON','RET'],"OUI")=="OUI":
+        if YesNoBackScreen("FUSIONNER ?",'y',['OUI','NON'],"OUI")=="OUI":
             print("Merging files on USB Key")
             holdScreen(["FUSION LISTES","EN COURS ..."],'m',1,True)
             file.addToUSBKEY(USBMountPoint,datetime.datetime.strptime(DT,FileDatetimeFormat),IntervalMulti)
