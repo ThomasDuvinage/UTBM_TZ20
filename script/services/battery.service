@@ -1,0 +1,10 @@
+[Unit]
+Description=Battery Voltage Reading for shutdown
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/UTBM_TZ20/script/external_devices/read_voltage.py
+
+[Install]
+WantedBy=multi-user.target

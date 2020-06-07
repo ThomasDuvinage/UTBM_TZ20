@@ -7,8 +7,13 @@ echo "Creation I2C OK !"
 
 cp /home/pi/UTBM_TZ20/services/fan.service /etc/systemd/system/fan.service
 cp /home/pi/UTBM_TZ20/services/main.service /etc/systemd/system/main.service
+cp /home/pi/UTBM_TZ20/services/battery.service /etc/systemd/system/battery.service
+chmod 644 /etc/systemd/system/fan.service
+chmod 644 /etc/systemd/system/main.service
+chmod 644 /etc/systemd/system/battery.service
 systemctl enable fan.service
 systemctl enable main.service
+systemctl enable battery.service
 systemctl daemon-reload
 echo "Creation des services OK !"
 

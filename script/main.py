@@ -1,3 +1,4 @@
+#! /usr/bin/python
 '''
  ___      ___ ________  ___       _______   ________   _________  ___  ________   ________  ________     
 |\  \    /  /|\   __  \|\  \     |\  ___ \ |\   ___  \|\___   ___\\  \|\   ___  \|\   ____\|\   __  \    
@@ -1160,8 +1161,8 @@ def sigterm_handler(_signo, _stack_frame): #HANDLER FUNCTION FOR SIGTERM SIGNAL
     led.shutDown()
     if not IsInterruptionIntentional:
         mylcd.lcd_clear()
-        mylcd.lcd_display_string("INTERRUPTION",1)
-        mylcd.lcd_display_string("PAR SIGTERM",2)
+        mylcd.lcd_display_string("EXTINCTION",1)
+        mylcd.lcd_display_string("BATTERIE FAIBLE",2)
     mylcd.backlight(0)
     GPIO.cleanup()
     sys.exit(0)
