@@ -13,9 +13,9 @@ VoltageThreshold = 4.8 #TODO: determine it empirically
 
 n = 1024 #Resolution MCP3001
 #numeros de pins
-SPICLK = 19
-SPIMISO = 13 #DOUT
-SPICS = 26
+SPICLK = 6
+SPIMISO = 5 #DOUT
+SPICS = 4
 # definition de l interface SPI
 GPIO.setup(SPIMISO, GPIO.IN)
 GPIO.setup(SPICLK, GPIO.OUT)

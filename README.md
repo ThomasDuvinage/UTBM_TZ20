@@ -49,12 +49,13 @@ sudo raspi-config
    * Using your keyboard arrows and Tab key, navigate to **Interfacing Options** and then **I2C**, then confirm
    * Repeat the same operation for **SPI** interface
 
-1. Run install.sh from the new folder with sudo privileges (you must type your password, by default its *raspberry*) :
+6. Run install.sh from the new folder with sudo privileges (you must type your password, by default its *raspberry*) :
 ```
 cd /home/pi/UTBM_TZ20/
+sudo chmod +x install.sh
 sudo ./install.sh
 ```
-6. Check that *scripts/main.py* has *-rwxrwxrwx* permissions :
+7. Check that *scripts/main.py* has *-rwxrwxrwx* permissions :
 ```
 ls -l /home/pi/UTBM_TZ20/scripts/main.py
 ```
@@ -63,12 +64,12 @@ ls -l /home/pi/UTBM_TZ20/scripts/main.py
     sudo chmod 777 /home/pi/UTBM_TZ20/scripts/main.py
     ```
 
-7. Then the script main.py should normally run by typing the following command : 
+8. Then the script main.py should normally run by typing the following command : 
 ```
 /usr/bin/python UTBM_TZ20/script/main.py
 ```
 
-8. Restart your raspberry, and *main.py* should automatically start
+9. Restart your raspberry, and *main.py* should automatically start
 ```
 sudo reboot now
 ```
