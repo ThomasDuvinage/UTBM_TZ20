@@ -55,13 +55,13 @@ cd /home/pi/UTBM_TZ20/
 sudo chmod +x install.sh
 sudo ./install.sh
 ```
-7. Check that *scripts/main.py* has *-rwxrwxrwx* permissions :
+7. Check that *script/main.py* has *-rwxrwxrwx* permissions :
 ```
-ls -l /home/pi/UTBM_TZ20/scripts/main.py
+ls -l /home/pi/UTBM_TZ20/script/main.py
 ```
 * Otherwise, give those permissions :
     ```
-    sudo chmod 777 /home/pi/UTBM_TZ20/scripts/main.py
+    sudo chmod 777 /home/pi/UTBM_TZ20/script/main.py
     ```
 
 8. Then the script main.py should normally run by typing the following command : 
