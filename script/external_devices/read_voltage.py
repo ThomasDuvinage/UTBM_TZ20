@@ -22,7 +22,7 @@ GPIO.setup(SPICLK, GPIO.OUT)
 GPIO.setup(SPICS, GPIO.OUT)
 
 def MCPread(clockpin, misopin, cspin):
-	GPIO.setup(clockpin, GPIO.OUT)
+    GPIO.setup(clockpin, GPIO.OUT)
     GPIO.setup(cspin, GPIO.OUT)
     GPIO.setup(misopin, GPIO.IN)
     GPIO.output(clockpin, False)  # CLK low
