@@ -982,6 +982,7 @@ def control_extract(DT): #Performs attendance control extraction
     holdScreen(["CONNEXION A LA","DSI UTBM ..."],'y',1,True)
     url = structConfig.structure["API_url"]
     try:
+        print('url : ',url)
         response = urllib2.urlopen(url).read().decode('utf-8')
     except Exception as e:
         print ("Error while connecting to API : ",e)
