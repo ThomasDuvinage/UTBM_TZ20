@@ -551,6 +551,7 @@ class Files():
                         self.absents += 1
 
         else:
+            print("PATH DSI FILE : ",self.pathDSIFile)
             self.os.system("cp "+self.pathDSIFile + " " +
                            self.folderPathName + '/absents.csv')
             self.absents = self.__row_count(self.pathDSIFile)
