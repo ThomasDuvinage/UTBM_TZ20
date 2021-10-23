@@ -66,7 +66,7 @@ version = 0 #date of last git pull
 
 #INITIALIZATION OF VARIABLES AND EXTERNAL OBJECTS
 continue_reading = True
-admin_uid = ""
+admin_uid = "805A42AA825904"
 mylcd = lcd()
 mylcd.lcd_clear()
 MIFAREReader = MFRC522()
