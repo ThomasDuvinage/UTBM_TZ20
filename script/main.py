@@ -91,7 +91,7 @@ def RecordAdmin(): #Records the administrator. The administrator will be the onl
 
 def CheckUIDFormat(UID): #Checks if a card UID corresponds to a UTBM card
     if acceptUTBMCardsOnly:
-        if len(UID)==14 and UID[0:3]=="805" and UID[12:14]=="04":
+        if len(UID)==14 and UID[0:2]=="80" and UID[12:14]=="04":
             return True
         else:
             return False
