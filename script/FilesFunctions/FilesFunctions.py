@@ -4,6 +4,7 @@
 #TODO: voir pour l'extraction de dossier vers SD et umount
 import os
 from datetime import datetime, timedelta
+import errno
 import time
 import USBKey
 
@@ -437,11 +438,12 @@ class Files():
         self.folderPathName = self.structConfig.structure["final_extractions"] + \
             self.initFilePath.split('/')[-1].replace(".csv", "")
         try:  # here we try to create a Directory to store files
-            self.os.mkdir(self.folderPathName)
-        except Exception as e:
-            print("Creation of the directory %s failed" % self.folderPathName)
-            print(e)
-            return
+            self.os.mkdir(self.folderPathName, exist_ok=True)
+        except OSError as e:
+            if(e.errno != os.errno.EEXIST):
+              print("Creation of the directory %s failed" % self.folderPathName)
+              print(e)
+              return
 
         # Cette ligne permet d'envoyer les requetes vers l'API afin de connaitre les logins
         self.__getUserInfoViaAPI(DTnow)
