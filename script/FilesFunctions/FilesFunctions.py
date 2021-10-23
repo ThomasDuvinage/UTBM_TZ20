@@ -438,7 +438,7 @@ class Files():
         self.folderPathName = self.structConfig.structure["final_extractions"] + \
             self.initFilePath.split('/')[-1].replace(".csv", "")
         try:  # here we try to create a Directory to store files
-            self.os.mkdir(self.folderPathName, exist_ok=True)
+            self.os.mkdir(self.folderPathName)
         except OSError as e:
             if(e.errno != os.errno.EEXIST):
               print("Creation of the directory %s failed" % self.folderPathName)
