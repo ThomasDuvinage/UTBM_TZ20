@@ -6,5 +6,5 @@ structure = {
      "final_extractions":    "/home/pi/UTBM_TZ20/files/Final_extractions/",
      "API_OUTPUTS":          "/home/pi/UTBM_TZ20/files/API_outputs/",
      # change it to "https://extranet1.utbm.fr/gestprod/api/cms/carte/" to run on utbm internal server or to "http://[IP_ADDRESS]/API_UTBM/index?uid=" to run it locally
-     "API_url": "http://192.168.1.4/API_UTBM/index?uid="
+     "API_url": "https://extranet1.utbm.fr/gestprod/api/cms/carte/"
 }
