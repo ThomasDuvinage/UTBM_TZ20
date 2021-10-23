@@ -121,7 +121,7 @@ def CheckAdmin(): #Authentificates the administrator before allowing access to s
     return True            
 
 #Following 3 variables are used to simulate fake cards for development purposes
-FoolUIDs = True #must be False if user has not registered his MAC addresses in dict below
+FoolUIDs = False #must be False if user has not registered his MAC addresses in dict below
 
 MAC_addresses = {
     'b8:27:eb:b5:93:fd':'val', #developper 1

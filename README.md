@@ -66,7 +66,7 @@ ls -l /home/pi/UTBM_TZ20/script/main.py
 
 8. Then the script main.py should normally run by typing the following command : 
 ```
-/usr/bin/python UTBM_TZ20/script/main.py
+/usr/bin/python /home/pi/UTBM_TZ20/script/main.py
 ```
 
 9. Restart your raspberry, and *main.py* should automatically start
