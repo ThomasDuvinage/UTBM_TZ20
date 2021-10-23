@@ -773,7 +773,7 @@ class Files():
     """
 
     def __row_count(self, path):
-        file = open(path+".csv")
+        file = open(path)
         reader = self.csv.reader(file)
         lines = len(list(reader))
 
