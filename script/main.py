@@ -982,7 +982,7 @@ def control_extract(DT): #Performs attendance control extraction
     holdScreen(["CONNEXION A LA","DSI UTBM ..."],'y',1,True)
     url = structConfig.structure["API_url"]
     try:
-        response = urllib.urlopen(url + "test").read().decode('utf-8')
+        response = urllib.urlopen(url).read().decode('utf-8')
     except Exception as e:
         print ("Error while connecting to API : ",e)
         buzz.error()
@@ -995,7 +995,7 @@ def control_extract(DT): #Performs attendance control extraction
     holdScreen(["EXTRACT. LISTES","EN COURS ..."],'m',1,True)
     file = Files(structConfig.structure["UID_inputs"]+DT+".csv")
     DSI_absolute = structConfig.structure["DSI_lists"]+DSI_files[0]
-    print "Absolute path to DSI_file : ",DSI_absolute
+    print("Absolute path to DSI_file : ",DSI_absolute)
     file.compareDsiFilesToFileCreation(DSI_absolute,datetime.datetime.strptime(DT,FileDatetimeFormat))
     if not mode:
         dismount_USB(USBMountPoint)

@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Sensible files
+files/API_outputs/*.csv
+files/DSI_lists/*.csv
+files/Final_extractions/*.csv
+files/UID_inputs/*.csv
