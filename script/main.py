@@ -53,7 +53,7 @@ buzz = Buzzer()
 encoder = Encoder()
 
 acceptUTBMCardsOnly = True #if True, the program will only accept UTBM-like cards (7 bytes UID beginning by 805 and ending by 04), both for admin and students
-enableStart = True
+enableStart = False
 ScrollSpeed = 65 #in percents
 IntervalMulti = datetime.timedelta(0)
 
