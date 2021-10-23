@@ -700,6 +700,7 @@ class Files():
                     response = self.urllib.urlopen(url + str(i[2]).rstrip()).read().decode('utf-8')
                     print("REPONSE : "+response)
                     data = self.json.loads(str(response))
+                    print("DATA :",data)
                     j = data[1][1]
 
                     print("STUDENT LOGIN : ",j)
