@@ -702,6 +702,8 @@ class Files():
                     data = self.json.loads(str(response))
                     j = data[1][1]
 
+                    print("STUDENT LOGIN : ",j)
+
                     outFileWriter.writerow([i[2][:-1], j])
 
                     print("API request success")
