@@ -49,6 +49,15 @@ sudo raspi-config
    * Using your keyboard arrows and Tab key, navigate to **Interfacing Options** and then **I2C**, then confirm
    * Repeat the same operation for **SPI** interface
 
+5.1 Set TimeZone Localisation 
+```
+sudo raspi-config  
+Localisation Option
+Change TimeZone
+Set to Paris
+sudo reboot now
+```
+
 6. Run install.sh from the new folder with sudo privileges (you must type your password, by default its *raspberry*) :
 ```
 cd /home/pi/UTBM_TZ20/
