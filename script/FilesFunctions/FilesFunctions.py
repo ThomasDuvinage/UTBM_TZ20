@@ -554,7 +554,7 @@ class Files():
             print("PATH DSI FILE : ",self.pathDSIFile)
             self.os.system("cp "+self.pathDSIFile + " " +
                            self.folderPathName + '/absents.csv')
-            self.absents = self.__row_count(self.folderPathName+'/absents.csv')
+            self.absents = 0 if not self.exist(self.folderPathName + '/absents.csv') else self.__row_count(self.folderPathName+'/absents.csv')
 
         with open(self.folderPathName + '/total.csv', self.append) as total_File:
             totalFileWriter = self.csv.writer(
