@@ -42,7 +42,7 @@ import sys
 """ import pyudev
 import psutil """
 import re
-import urllib
+import urllib2
 import FilesFunctions.structureConfig as structConfig
 
 GPIO.setwarnings(False)
