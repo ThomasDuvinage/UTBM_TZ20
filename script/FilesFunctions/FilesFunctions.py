@@ -725,25 +725,21 @@ class Files():
                 i = i[:-1].split(',')
                 try:
                     print("Sending Request to API")
-                    print("URL SENT TO API : ", url + str(i[2]).rstrip())
                     response = self.urllib.urlopen(
                         url + str(i[2]).rstrip()).read().decode("UTF-8")
-                    print("REPONSE : ", response)
-                    data = self.ast.literal_eval(response)
-                    print("DATA :", data)
-                    user_login = data['porteur']['login']
 
-                    print("STUDENT LOGIN : ", user_login)
-                    print("ADD LINE TO FILE : ", [i[2][:-1], user_login])
+                    data = self.ast.literal_eval(response)
+
+                    user_login = data['porteur']['login']
 
                     outFileWriter.writerow([i[2][:-1], user_login])
 
                     print("API request success")
 
                 except Exception as e:
-                    print(e)
                     self.errorsRequestAPI += 1
                     print("Error with UID : " + i[2])
+                    print(e)
                     outFileWriter.writerow([i[2][:-1], "Erreur_API"])
 
     """
