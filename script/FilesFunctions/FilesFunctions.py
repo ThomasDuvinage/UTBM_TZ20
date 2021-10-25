@@ -696,7 +696,7 @@ class Files():
                 i = i[:-1].split(',')
                 try:
                     print("Sending Request to API")
-                    print("URL SENT TO API : ",str(i[2]).rstrip())
+                    print("URL SENT TO API : ",url + str(i[2]).rstrip())
                     response = self.urllib.urlopen(url + str(i[2]).rstrip()).read().decode('utf-8')
                     print("REPONSE : "+response)
                     #data = self.json.loads(str(response))
