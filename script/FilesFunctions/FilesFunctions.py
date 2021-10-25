@@ -699,13 +699,14 @@ class Files():
                     print("URL SENT TO API : ",str(i[2]).rstrip())
                     response = self.urllib.urlopen(url + str(i[2]).rstrip()).read().decode('utf-8')
                     print("REPONSE : "+response)
-                    data = self.json.loads(str(response))
-                    print("DATA :",data)
-                    j = data[1][1]
+                    #data = self.json.loads(str(response))
+                    #print("DATA :",data)
+                    user_login = response["porteur"]["login"]
 
-                    print("STUDENT LOGIN : ",j)
+                    print("STUDENT LOGIN : ",user_login)
+                    print("ADD LINE TO FILE : ", [i[2][:-1], user_login])
 
-                    outFileWriter.writerow([i[2][:-1], j])
+                    outFileWriter.writerow([i[2][:-1], user_login])
 
                     print("API request success")
 
