@@ -20,6 +20,7 @@ class Files():
     import json
     import structureConfig as structConfig
     import re
+    import ast
 
     """
         Le constructeur permet d'initialiser cette classe
@@ -725,11 +726,12 @@ class Files():
                 try:
                     print("Sending Request to API")
                     print("URL SENT TO API : ", url + str(i[2]).rstrip())
-                    response = self.urllib.urlopen(url + str(i[2]).rstrip())
+                    response = self.urllib.urlopen(
+                        url + str(i[2]).rstrip()).read().decode("UTF-8")
                     print("REPONSE : ", response)
-                    data = self.json.load(response)
+                    data = self.ast.literal_eval(response)
                     print("DATA :", data)
-                    user_login = response["porteur"]["login"]
+                    user_login = response['porteur']['login']
 
                     print("STUDENT LOGIN : ", user_login)
                     print("ADD LINE TO FILE : ", [i[2][:-1], user_login])
