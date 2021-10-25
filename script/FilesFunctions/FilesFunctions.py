@@ -729,7 +729,7 @@ class Files():
                     print("REPONSE : ", response)
                     data = self.json.load(response)
                     print("DATA :", data)
-                    user_login = response["porteur"]["login"].encode("ascii")
+                    user_login = response["porteur"]["login"]
 
                     print("STUDENT LOGIN : ", user_login)
                     print("ADD LINE TO FILE : ", [i[2][:-1], user_login])
