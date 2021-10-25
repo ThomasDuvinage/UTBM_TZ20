@@ -61,13 +61,13 @@ IntervalMulti = datetime.timedelta(0)
 ConfigFileName = "/home/pi/UTBM_TZ20/script/mainconfig.ini"
 IsInterruptionIntentional = False
 FileDatetimeFormat = "%d-%m-%Y-%H-%M-%S"
-ConnectionTestUID = "80556170911404"
+ConnectionTestUID = "805A42AA825904"
 ForceLevel = []
 version = 0  # date of last git pull
 
 # INITIALIZATION OF VARIABLES AND EXTERNAL OBJECTS
 continue_reading = True
-admin_uid = "80556170911404"
+admin_uid = "805A42AA825904"
 mylcd = lcd()
 mylcd.lcd_clear()
 MIFAREReader = MFRC522()
@@ -129,7 +129,7 @@ def CheckAdmin():  # Authentificates the administrator before allowing access to
 
 
 # Following 3 variables are used to simulate fake cards for development purposes
-FoolUIDs = True  # must be False if user has not registered his MAC addresses in dict below
+FoolUIDs = False  # must be False if user has not registered his MAC addresses in dict below
 
 MAC_addresses = {
     'b8:27:eb:b5:93:fd': 'val',  # developper 1
