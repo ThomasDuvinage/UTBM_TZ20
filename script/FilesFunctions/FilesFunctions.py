@@ -726,7 +726,7 @@ class Files():
                     print("Sending Request to API")
                     print("URL SENT TO API : ", url + str(i[2]).rstrip())
                     response = self.urllib.urlopen(url + str(i[2]).rstrip())
-                    print("REPONSE : "+response)
+                    print("REPONSE : ", response)
                     data = self.json.load(response)
                     print("DATA :", data)
                     user_login = response["porteur"]["login"].encode("ascii")
