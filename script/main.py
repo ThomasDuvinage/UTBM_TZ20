@@ -61,13 +61,13 @@ IntervalMulti = datetime.timedelta(0)
 ConfigFileName = "/home/pi/UTBM_TZ20/script/mainconfig.ini"
 IsInterruptionIntentional = False
 FileDatetimeFormat = "%d-%m-%Y-%H-%M-%S"
-ConnectionTestUID = "805CB8BAA4AE04"
+ConnectionTestUID = "80556170911404"
 ForceLevel = []
 version = 0  # date of last git pull
 
 # INITIALIZATION OF VARIABLES AND EXTERNAL OBJECTS
 continue_reading = True
-admin_uid = "805CB8BAA4AE04"
+admin_uid = "80556170911404"
 mylcd = lcd()
 mylcd.lcd_clear()
 MIFAREReader = MFRC522()
