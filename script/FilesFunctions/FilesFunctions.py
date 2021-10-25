@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-#TODO: modifier l'addition de fichier
-#TODO: voir pour l'extraction de dossier vers SD et umount
+# TODO: modifier l'addition de fichier
+# TODO: voir pour l'extraction de dossier vers SD et umount
 import os
 from datetime import datetime, timedelta
 import errno
@@ -16,7 +16,7 @@ class Files():
     import os
     from os import path
     import shutil
-    #import urllib  # for python 3 : import urllib.request
+    # import urllib  # for python 3 : import urllib.request
     import urllib
     import USBKey
     import json
@@ -168,10 +168,11 @@ class Files():
         Pour cela les fichiers du dossier final_extractions sont ajoutes au fichier sur la cle usb
     """
 
-    def addToUSBKEY(self, pathToUSB, DTnow, interval): #to call in case of multiple extraction
+    # to call in case of multiple extraction
+    def addToUSBKEY(self, pathToUSB, DTnow, interval):
 
         if(pathToUSB):
-            if(self.folderPathName != ""):#permet de verifier que l'extraction a ete faite 
+            if(self.folderPathName != ""):  # permet de verifier que l'extraction a ete faite
                 if(self.exist(pathToUSB + '/' + "Fichiers_SCAN/")):
 
                     directoryName = self.foundSameEventFile(
@@ -190,26 +191,28 @@ class Files():
                                     with open(pathToUSB + '/presents.csv', self.append) as presentFileUSBKey:
                                         fileUSBwriter = self.csv.writer(
                                             presentFileUSBKey)
-                                        
-                                        #Cette lecture du fichier permet de verifier si la personne n'est pas deja presente dans le fichier sur la cle
-                                        #dans cette situation cela signifierait que la personne est rentree dans part deux entree en scannant les deux fois
+
+                                        # Cette lecture du fichier permet de verifier si la personne n'est pas deja presente dans le fichier sur la cle
+                                        # dans cette situation cela signifierait que la personne est rentree dans part deux entree en scannant les deux fois
                                         with open(pathToUSB + '/presents.csv', self.read) as presentFileUSBReader:
-                                            checkerUSBPresent = self.csv.reader(presentFileUSBReader)
+                                            checkerUSBPresent = self.csv.reader(
+                                                presentFileUSBReader)
 
                                             for student in presentFileReader:
                                                 presentFileUSBReader.seek(0)
                                                 next(checkerUSBPresent)
-                                                
+
                                                 indicePresent = False
                                                 for scannedPresent in checkerUSBPresent:
                                                     if(student[5] == scannedPresent[5]):
                                                         indicePresent = True
-                                                
+
                                                 if not indicePresent:
                                                     fileUSBwriter.writerow(
                                                         student[:])
 
-                                    self.presents = self.__row_count(pathToUSB + '/presents.csv') - 1
+                                    self.presents = self.__row_count(
+                                        pathToUSB + '/presents.csv') - 1
 
                                 else:
                                     with open(pathToUSB + '/presents.csv', self.write) as presentFileUSBKey:
@@ -228,12 +231,14 @@ class Files():
 
                                 if(self.exist(pathToUSB + '/absents.csv') and self.exist(pathToUSB + '/presents.csv')):
                                     self.absents = 0
-                                    #Supression du fichier absent sur la cle usb afin de regener les absents en fonction du fichier des presents 
+                                    # Supression du fichier absent sur la cle usb afin de regener les absents en fonction du fichier des presents
                                     self.deleteFile(pathToUSB + '/absents.csv')
-                                    #Cela permet par la suite de recreer un fichier absent sur la cle usb en lisant le fichier des presents qui est sur la cle
+                                    # Cela permet par la suite de recreer un fichier absent sur la cle usb en lisant le fichier des presents qui est sur la cle
                                     with open(pathToUSB + '/presents.csv', self.read) as Present_File, open(self.pathDSIFile+".csv", self.read) as DSIfile:
-                                        Present_FileReader = self.csv.reader(Present_File)                                       
-                                        DSI_FileReader = self.csv.reader(DSIfile)
+                                        Present_FileReader = self.csv.reader(
+                                            Present_File)
+                                        DSI_FileReader = self.csv.reader(
+                                            DSIfile)
 
                                         # Ces deux lignes permettent de skiper les headers dans les fichiers
                                         next(DSI_FileReader)
@@ -252,20 +257,22 @@ class Files():
                                                     with open(pathToUSB + '/absents.csv', self.append) as absentsFile:
                                                         absentFileWriter = self.csv.writer(
                                                             absentsFile, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
-                                                        absentFileWriter.writerow(DSI_Row[:])
+                                                        absentFileWriter.writerow(
+                                                            DSI_Row[:])
 
                                                 else:
                                                     with open(pathToUSB + '/absents.csv', self.write) as absentsFile:
                                                         absentFileWriter = self.csv.writer(
                                                             absentsFile, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
                                                         absentFileWriter.writerow(
-                                                            ['NOM', 'PRENOM', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL','LOGIN', 'FORMATION', 'NIVEAU'])
-                                                        absentFileWriter.writerow(DSI_Row[:])
+                                                            ['NOM', 'PRENOM', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL', 'LOGIN', 'FORMATION', 'NIVEAU'])
+                                                        absentFileWriter.writerow(
+                                                            DSI_Row[:])
 
                                                 self.absents += 1
-                                            
 
-                                elif(self.exist(pathToUSB + '/absents.csv')):#Si il n'y pas de fichier de present sur la cle mais qu'il y a un fichier d'absent alors nous ajoutons les absent que nous vons genere dans ce fichier
+                                # Si il n'y pas de fichier de present sur la cle mais qu'il y a un fichier d'absent alors nous ajoutons les absent que nous vons genere dans ce fichier
+                                elif(self.exist(pathToUSB + '/absents.csv')):
                                     with open(pathToUSB + '/absents.csv', self.append) as absentFileUSBKey:
                                         fileUSBwriter = self.csv.writer(
                                             absentFileUSBKey)
@@ -275,9 +282,11 @@ class Files():
                                             fileUSBwriter.writerow(
                                                 student[:])
 
-                                    self.absents = self.__row_count(pathToUSB + '/absents.csv') - 1
+                                    self.absents = self.__row_count(
+                                        pathToUSB + '/absents.csv') - 1
 
-                                elif not self.exist(pathToUSB + '/absents.csv'):#Si il n'y a aucun fichier d'absent sur la cle alors on copie celui que nous avons genere
+                                # Si il n'y a aucun fichier d'absent sur la cle alors on copie celui que nous avons genere
+                                elif not self.exist(pathToUSB + '/absents.csv'):
                                     with open(pathToUSB + '/absents.csv', self.write) as absentFileUSBKey:
                                         fileUSBwriter = self.csv.writer(
                                             absentFileUSBKey)
@@ -288,7 +297,7 @@ class Files():
 
                                 print("Adding absents content to USB done")
 
-                        #Comme les faux presents sont des personnes qui sont la par erreur nous pouvons les ajouter directement a la suite du fichier ou d'en creer un si il n'exite pas 
+                        # Comme les faux presents sont des personnes qui sont la par erreur nous pouvons les ajouter directement a la suite du fichier ou d'en creer un si il n'exite pas
                         if(self.exist(self.folderPathName + '/faux-presents.csv')):
                             with open(self.folderPathName + '/faux-presents.csv', self.read) as wrong_present_File:
                                 wPresentFileReader = self.csv.reader(
@@ -311,25 +320,31 @@ class Files():
                                         for student in wPresentFileReader:
                                             fileUSBwriter.writerow(
                                                 student[:])
-                                
-                            self.wrong_presents = self.__row_count(pathToUSB + '/faux-presents.csv') - 1
+
+                            self.wrong_presents = self.__row_count(
+                                pathToUSB + '/faux-presents.csv') - 1
                             print("Adding faux-present content to USB done")
 
                         with open(pathToUSB + '/total.csv', self.write) as totalFileUSBKey:
-                            totalFileWriter = self.csv.writer(totalFileUSBKey, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
-                            totalFileWriter.writerow(['DATE', 'HEURE', 'NOM', 'PRENOM','PRESENCE', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL', 'FORMATION', 'NIVEAU'])
+                            totalFileWriter = self.csv.writer(
+                                totalFileUSBKey, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
+                            totalFileWriter.writerow(
+                                ['DATE', 'HEURE', 'NOM', 'PRENOM', 'PRESENCE', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL', 'FORMATION', 'NIVEAU'])
 
                             if(self.exist(pathToUSB + '/presents.csv')):
                                 with open(pathToUSB + '/presents.csv', self.read) as presentFile:
-                                    presentFileReader = self.csv.reader(presentFile)
+                                    presentFileReader = self.csv.reader(
+                                        presentFile)
                                     next(presentFileReader)
 
                                     for present in presentFileReader:
-                                        totalFileWriter.writerow(list(present[0:4])+["OUI"]+list(present[4:10]))
+                                        totalFileWriter.writerow(
+                                            list(present[0:4])+["OUI"]+list(present[4:10]))
 
                             if(self.exist(pathToUSB + '/absents.csv')):
                                 with open(pathToUSB + '/absents.csv', self.read) as absentsFile:
-                                    absentFileReader = self.csv.reader(absentsFile)
+                                    absentFileReader = self.csv.reader(
+                                        absentsFile)
                                     next(absentFileReader)
 
                                     for absent in absentFileReader:
@@ -338,12 +353,13 @@ class Files():
 
                             if(self.exist(pathToUSB + '/faux-presents.csv')):
                                 with open(pathToUSB + '/faux-presents.csv', self.read) as fauxPresentFile:
-                                    fauxPresentFileReader = self.csv.reader(fauxPresentFile)
+                                    fauxPresentFileReader = self.csv.reader(
+                                        fauxPresentFile)
                                     next(fauxPresentFileReader)
 
                                     for faux_present in fauxPresentFileReader:
                                         totalFileWriter.writerow(
-                                            list(faux_present[0:2])+ ["/", "/", "OUI MAIS INATTENDUE", "/", "/", "/"]+[faux_present[2]]+["/","/"])
+                                            list(faux_present[0:2]) + ["/", "/", "OUI MAIS INATTENDUE", "/", "/", "/"]+[faux_present[2]]+["/", "/"])
 
                             print("Adding total content to USB done")
 
@@ -361,15 +377,21 @@ class Files():
                                         headerReport = next(
                                             reportFileReaderUSB)
 
-                                        linesReportUSB = next(reportFileReaderUSB)    
+                                        linesReportUSB = next(
+                                            reportFileReaderUSB)
 
-                                        numScan = self.__row_count(self.initFilePath) + int(linesReportUSB[0])
+                                        numScan = self.__row_count(
+                                            self.initFilePath) + int(linesReportUSB[0])
 
-                                        numSupposedToAttend = self.__row_count(self.pathDSIFile+".csv")-1
+                                        numSupposedToAttend = self.__row_count(
+                                            self.pathDSIFile+".csv")-1
 
-                                        percentAbsents = (float(self.absents) / numSupposedToAttend) * 100
-                                        percentPresents = (float(self.presents) / numSupposedToAttend) * 100
-                                        percentWrongPresent = (float(self.wrong_presents) / numScan) * 100
+                                        percentAbsents = (
+                                            float(self.absents) / numSupposedToAttend) * 100
+                                        percentPresents = (
+                                            float(self.presents) / numSupposedToAttend) * 100
+                                        percentWrongPresent = (
+                                            float(self.wrong_presents) / numScan) * 100
 
                                         dateFirstScan, dateLastScan = 0, 0
 
@@ -393,13 +415,14 @@ class Files():
                                         reportWriter = self.csv.writer(
                                             reportFile, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
 
-                                        reportWriter.writerow(["Nombre scans","Nombre etudiants attendus","Nombre absents (%Attendus) ", "Nombre presents (%Attendus)",
-                                                            "Nombre faux-presents (%Scans)", "DUREE SCAN", "Nombre erreur de requetes API"])
-                                        reportWriter.writerow([str(numScan),str(numSupposedToAttend),str(self.absents) + ' (' + '%.2f'%percentAbsents + '%)', str(
-                                            self.presents) + ' (' + '%.2f'%percentPresents + '%)', str(self.wrong_presents) + ' (' + '%.2f'%percentWrongPresent + '%)', scanningTime.strftime("%H:%M:%S"), self.errorsRequestAPI])
-                                    
+                                        reportWriter.writerow(["Nombre scans", "Nombre etudiants attendus", "Nombre absents (%Attendus) ", "Nombre presents (%Attendus)",
+                                                               "Nombre faux-presents (%Scans)", "DUREE SCAN", "Nombre erreur de requetes API"])
+                                        reportWriter.writerow([str(numScan), str(numSupposedToAttend), str(self.absents) + ' (' + '%.2f' % percentAbsents + '%)', str(
+                                            self.presents) + ' (' + '%.2f' % percentPresents + '%)', str(self.wrong_presents) + ' (' + '%.2f' % percentWrongPresent + '%)', scanningTime.strftime("%H:%M:%S"), self.errorsRequestAPI])
+
                                 elif not self.__checkReportCorrectness(pathToUSB + '/report.csv'):
-                                    print("There are problems in the file report.csv at ", pathToUSB + '/report.csv')
+                                    print(
+                                        "There are problems in the file report.csv at ", pathToUSB + '/report.csv')
                                     return False
 
                             print("Adding report content to USB done")
@@ -415,7 +438,8 @@ class Files():
 
                     return False
             else:
-                print("Please do the comparaison with the DSI file before trying to export files")
+                print(
+                    "Please do the comparaison with the DSI file before trying to export files")
                 return False
         else:
             print("No usb Key connected")
@@ -431,19 +455,20 @@ class Files():
     Pour faire la comparaison il faut que le fichier de la DSI ait le format suivant :
         NOM, PRENOM, ETUD_NUMERO, NO_INDIVIDU, EMAIL, LOGIN, FORMATION, NIVEAU
     """
-    
+
     def compareDsiFilesToFileCreation(self, pathToDsiFile, DTnow):
         self.pathDSIFile = pathToDsiFile
-        pathToDsiFile+=".csv"
+        pathToDsiFile += ".csv"
         self.folderPathName = self.structConfig.structure["final_extractions"] + \
             self.initFilePath.split('/')[-1].replace(".csv", "")
         try:  # here we try to create a Directory to store files
             self.os.mkdir(self.folderPathName)
         except OSError as e:
             if(e.errno != os.errno.EEXIST):
-              print("Creation of the directory %s failed" % self.folderPathName)
-              print(e)
-              return
+                print("Creation of the directory %s failed" %
+                      self.folderPathName)
+                print(e)
+                return
 
         # Cette ligne permet d'envoyer les requetes vers l'API afin de connaitre les logins
         self.__getUserInfoViaAPI(DTnow)
@@ -453,15 +478,17 @@ class Files():
 
         with open(api_output_path, self.read) as API_File, open(pathToDsiFile, self.read) as DSIfile:
             API_FileReader = self.csv.reader(API_File)
-            DSI_FileReader = self.csv.reader(DSIfile,delimiter=',') # to specify delimiter : self.csv.reader(DSIfile,delimiter=";")
+            # to specify delimiter : self.csv.reader(DSIfile,delimiter=";")
+            DSI_FileReader = self.csv.reader(DSIfile, delimiter=',')
 
-            next(DSI_FileReader) # Cette ligne permet de ne pas compter le header
+            # Cette ligne permet de ne pas compter le header
+            next(DSI_FileReader)
 
             for API_Row in API_FileReader:
-                print("Student found in API_output : ",API_Row[1])
+                print("Student found in API_output : ", API_Row[1])
                 indice_present = 0
                 for DSI_Row in DSI_FileReader:
-                    #print(DSI_Row[5])
+                    # print(DSI_Row[5])
                     if(API_Row[1] == DSI_Row[5]):
                         print('Present recognized')
                         rowUidFile = self.__getRowByKey(
@@ -472,15 +499,15 @@ class Files():
                                 presentFileWriter = self.csv.writer(
                                     presentFile, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
                                 presentFileWriter.writerow(
-                                    [rowUidFile[0], rowUidFile[1], DSI_Row[0], DSI_Row[1], DSI_Row[2], DSI_Row[3], DSI_Row[4], DSI_Row[5],DSI_Row[6], DSI_Row[7]])
+                                    [rowUidFile[0], rowUidFile[1], DSI_Row[0], DSI_Row[1], DSI_Row[2], DSI_Row[3], DSI_Row[4], DSI_Row[5], DSI_Row[6], DSI_Row[7]])
 
-                        else: #we first write the header in top of file
+                        else:  # we first write the header in top of file
                             with open(self.folderPathName + '/presents.csv', self.write) as presentFile:
                                 presentFileWriter = self.csv.writer(
                                     presentFile, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
                                 # ecrire le titre des colonnes du tableau
                                 presentFileWriter.writerow(
-                                    ['DATE', 'HEURE', 'NOM', 'PRENOM', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL', 'LOGIN','FORMATION', 'NIVEAU'])
+                                    ['DATE', 'HEURE', 'NOM', 'PRENOM', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL', 'LOGIN', 'FORMATION', 'NIVEAU'])
                                 presentFileWriter.writerow(
                                     [rowUidFile[0], rowUidFile[1], DSI_Row[0], DSI_Row[1], DSI_Row[2], DSI_Row[3], DSI_Row[4], DSI_Row[5], DSI_Row[6], DSI_Row[7]])
 
@@ -489,7 +516,7 @@ class Files():
                         break
                 DSIfile.seek(0)
                 next(DSI_FileReader)
-                if not indice_present and API_Row[1]!="Erreur_API":
+                if not indice_present and API_Row[1] != "Erreur_API":
                     rowUidFile = self.__getRowByKey(
                         API_Row[0], self.initFilePath, 2)
 
@@ -527,7 +554,7 @@ class Files():
                     for Present_Row in Present_FileReader:
                         if(DSI_Row[3] == Present_Row[5]):
                             indice_present = 1
-                            print("Present found : ",Present_Row[2])
+                            print("Present found : ", Present_Row[2])
                             break
 
                     if not indice_present:
@@ -551,17 +578,18 @@ class Files():
                         self.absents += 1
 
         else:
-            print("PATH DSI FILE : ",self.pathDSIFile)
+            print("PATH DSI FILE : ", self.pathDSIFile)
             # self.os.system("cp "+self.pathDSIFile + " " +
             #                self.folderPathName + '/absents.csv')
-            self.absents = 0 if not self.exist(self.folderPathName + '/absents.csv') else self.__row_count(self.folderPathName+'/absents.csv')
+            self.absents = 0 if not self.exist(
+                self.folderPathName + '/absents.csv') else self.__row_count(self.folderPathName+'/absents.csv')
 
         with open(self.folderPathName + '/total.csv', self.append) as total_File:
             totalFileWriter = self.csv.writer(
                 total_File, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
 
             totalFileWriter.writerow(
-                ['DATE', 'HEURE', 'NOM', 'PRENOM', 'PRESENCE','ETUD_NUMERO', 'NO_INDIVIDU','MAIL','LOGIN', 'FORMATION', 'NIVEAU'])
+                ['DATE', 'HEURE', 'NOM', 'PRENOM', 'PRESENCE', 'ETUD_NUMERO', 'NO_INDIVIDU', 'MAIL', 'LOGIN', 'FORMATION', 'NIVEAU'])
 
             if(self.exist(self.folderPathName + '/presents.csv')):
                 with open(self.folderPathName + '/presents.csv', self.read) as presentFile:
@@ -569,7 +597,8 @@ class Files():
                     next(presentFileReader)
 
                     for present in presentFileReader:
-                        totalFileWriter.writerow(list(present[0:4])+["OUI"]+list(present[4:10]))
+                        totalFileWriter.writerow(
+                            list(present[0:4])+["OUI"]+list(present[4:10]))
 
             if(self.exist(self.folderPathName + '/absents.csv')):
                 with open(self.folderPathName + '/absents.csv', self.read) as absentsFile:
@@ -587,7 +616,7 @@ class Files():
 
                     for faux_present in fauxPresentFileReader:
                         totalFileWriter.writerow(
-                            list(faux_present[0:2])+ ["/", "/", "OUI MAIS INATTENDUE", "/", "/", "/"]+[faux_present[2]]+["/","/"])
+                            list(faux_present[0:2]) + ["/", "/", "OUI MAIS INATTENDUE", "/", "/", "/"]+[faux_present[2]]+["/", "/"])
 
         self.__generateReport(self.folderPathName, DTnow)
 
@@ -598,7 +627,7 @@ class Files():
     """
 
     def exist(self, pathToFile=None):
-        if pathToFile==None:
+        if pathToFile == None:
             if(self.path.exists(self.initFilePath)):
                 return True
             else:
@@ -691,19 +720,20 @@ class Files():
 
         with open(self.initFilePath, self.read) as f, open(outFile, self.write) as g:
             # outFileWriter = self.csv.writer(g, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
-            outFileWriter = self.csv.writer(g, delimiter=',',quotechar='|',escapechar='-',quoting=self.csv.QUOTE_NONE)
+            outFileWriter = self.csv.writer(
+                g, delimiter=',', quotechar='|', escapechar='-', quoting=self.csv.QUOTE_NONE)
             for i in f:
                 i = i[:-1].split(',')
                 try:
                     print("Sending Request to API")
-                    print("URL SENT TO API : ",url + str(i[2]).rstrip())
-                    response = self.urllib.urlopen(url + str(i[2]).rstrip()).read().decode('utf-8')
+                    print("URL SENT TO API : ", url + str(i[2]).rstrip())
+                    response = self.urllib.urlopen(url + str(i[2]).rstrip())
                     print("REPONSE : "+response)
-                    #data = self.json.loads(str(response))
-                    #print("DATA :",data)
-                    user_login = response["porteur"]["login"]
+                    data = self.json.load(response)
+                    print("DATA :", data)
+                    user_login = response["porteur"]["login"].encode("ascii")
 
-                    print("STUDENT LOGIN : ",user_login)
+                    print("STUDENT LOGIN : ", user_login)
                     print("ADD LINE TO FILE : ", [i[2][:-1], user_login])
 
                     outFileWriter.writerow([i[2][:-1], user_login])
@@ -746,28 +776,28 @@ class Files():
             reportWriter = self.csv.writer(
                 reportFile, delimiter=',', quotechar='|', quoting=self.csv.QUOTE_MINIMAL)
 
-            reportWriter.writerow(["Nombre scans","Nombre etudiants attendus","Nombre absents (%Attendus) ", "Nombre presents (%Attendus)",
+            reportWriter.writerow(["Nombre scans", "Nombre etudiants attendus", "Nombre absents (%Attendus) ", "Nombre presents (%Attendus)",
                                    "Nombre faux-presents (%Scans)", "DUREE SCAN", "Nombre erreur de requetes API"])
-            reportWriter.writerow([str(numScan),str(numSupposedToAttend),str(self.absents) + ' (' + '%.2f'%percentAbsents + '%)', str(
-                self.presents) + ' (' + '%.2f'%percentPresents + '%)', str(self.wrong_presents) + ' (' + '%.2f'%percentWrongPresent + '%)', str(scanningTime), self.errorsRequestAPI])
-        
+            reportWriter.writerow([str(numScan), str(numSupposedToAttend), str(self.absents) + ' (' + '%.2f' % percentAbsents + '%)', str(
+                self.presents) + ' (' + '%.2f' % percentPresents + '%)', str(self.wrong_presents) + ' (' + '%.2f' % percentWrongPresent + '%)', str(scanningTime), self.errorsRequestAPI])
+
     """
         Cette methode permet de verifir la validite d'un fichier report 
 
     """
-    def __checkReportCorrectness(self,pathToReport):
+
+    def __checkReportCorrectness(self, pathToReport):
         with open(pathToReport, self.read) as reportFile:
             reportReader = self.csv.reader(reportFile)
 
             header = next(reportReader)
 
-            if(len(header) != 7):#Car le fichier report contient 7 elements si on commence a compter a partir de 1
+            if(len(header) != 7):  # Car le fichier report contient 7 elements si on commence a compter a partir de 1
                 return False
             else:
                 return True
-        
-        return False
 
+        return False
 
     """
         Cette methode permet de compter le nombre de lines dans le fichier csv
@@ -906,9 +936,9 @@ class Files():
             print("Error happened during importation of DSI file")
             return False
         return True
-        
-    def ParseReport(self): #return the following array : 
-        with open(self.initFilePath,self.read) as Report_File:
+
+    def ParseReport(self):  # return the following array :
+        with open(self.initFilePath, self.read) as Report_File:
             Report_Reader = self.csv.reader(Report_File)
             next(Report_Reader)
             try:
@@ -938,7 +968,6 @@ def listDirectory(parentDir, list_folders, list_files, only_csv):
                     res.append(file)
         break  # prevents from deeper search (we stop at level 1)
     return res
-
 
 
 if __name__ == '__main__':
