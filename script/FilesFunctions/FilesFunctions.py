@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# TODO: modifier l'addition de fichier
-# TODO: voir pour l'extraction de dossier vers SD et umount
 import os
 from datetime import datetime, timedelta
 import errno
@@ -740,7 +738,8 @@ class Files():
 
                     print("API request success")
 
-                except:
+                except Exception as e:
+                    print(e)
                     self.errorsRequestAPI += 1
                     print("Error with UID : " + i[2])
                     outFileWriter.writerow([i[2][:-1], "Erreur_API"])
