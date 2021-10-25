@@ -731,7 +731,7 @@ class Files():
                     print("REPONSE : ", response)
                     data = self.ast.literal_eval(response)
                     print("DATA :", data)
-                    user_login = response['porteur']['login']
+                    user_login = data['porteur']['login']
 
                     print("STUDENT LOGIN : ", user_login)
                     print("ADD LINE TO FILE : ", [i[2][:-1], user_login])
