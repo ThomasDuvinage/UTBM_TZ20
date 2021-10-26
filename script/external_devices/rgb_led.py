@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import RPi.GPIO as GPIO
+import time
 
 # define colors by using dictonnary (R,G,B)
 colorPanel = {}
@@ -29,7 +30,7 @@ class Led():
         GPIO.setup(self.b, GPIO.OUT, initial=GPIO.HIGH)
 
     @staticmethod
-    def setColor(color, self):
+    def setColor(self, color):
         """
             This method is used to set the color of the led by passing in argument an array of color state
         """
@@ -48,6 +49,10 @@ class Led():
 if __name__ == '__main__':
     try:
         led = Led()
+        time.sleep(2)
+        led.setColor(colorPanel['m'])
+        time.sleep(2)
+
         led.shutDown()
     except:
         pass
