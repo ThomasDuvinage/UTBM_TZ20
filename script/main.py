@@ -52,9 +52,9 @@ led = Led()
 buzz = Buzzer()
 encoder = Encoder()
 
-# if True, the program will only accept UTBM-like cards (7 bytes UID beginning by 805 and ending by 04), both for admin and students
+# if True, the program will only accept UTBM-like cards (7 bytes UID beginning by 80 and ending by 04), both for admin and students
 acceptUTBMCardsOnly = True
-enableStart = False
+enableStart = True
 ScrollSpeed = 65  # in percents
 IntervalMulti = datetime.timedelta(0)
 
