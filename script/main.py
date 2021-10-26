@@ -943,7 +943,8 @@ def shutdown():  # Shutdown raspberry with confirmation asking
         setLedState("o")
         print ("SHUTDOWN REQUESTED")
         GPIO.cleanup()
-        subprocess.call("sudo shutdown now", shell=True)
+        # halt -> The Pi goes into a lower powered state and wait for back panel button to be pressed to restart otherwise it can be shutdown by disconnecting power
+        subprocess.call("sudo halt", shell=True)
 
 
 def restart():  # Reboot raspberry with confirmation asking
